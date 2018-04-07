@@ -70,3 +70,26 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect('/login')
+    
+def updateProfile(request) :
+    response = {}
+    if request.method == 'POST' :
+        profile = Userprofile.objects.get(user=request.user)
+        profile.course = request.POST['course']
+        profile.branch = request.POST['branch']
+        profile.contact = request.POST['contact']
+        profile.year = request.POST['year']
+        
+        profile.save()
+
+        return redirect('/profile/'+profile.regNum)
+    return render(request,'share/updateProfile.djt',response)
+
+def profile(request,regNum) :
+    userProfile = Userprofile.objects.get(regNum=regNum)
+    items = Item.objects.filter(owner=userProfile.user)
+    response = {}
+    response['userProfile'] = userProfile
+    response['items'] = items
+    return render(request,'share/profilepage.djt',response)
+

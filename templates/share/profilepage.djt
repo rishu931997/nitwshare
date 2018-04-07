@@ -1,0 +1,24 @@
+{% include "share/base.djt" %}
+{% load staticfiles %}
+
+{%block title%}
+NITWShare | Profile
+{%endblock%}
+
+{%block content%}
+<div class='container-fluid' id="full-screen" style="padding-top: 100px;">
+    <div class="row">
+        <div class="col-sm-4">
+            <ul>
+                <li>Name : {{userProfile.user.first_name}} {{userProfile.user.last_name}}</li>
+                <li> course : {{userProfile.course}}</li>
+                <li> branch : {{userProfile.branch}}</li>
+                <li> contact : {{userProfile.contact}}</li>
+                <li> year : {{userProfile.year}}</li>
+            </ul>
+        </div>
+        <div class="col-sm-8">
+        </div>
+    </div>
+</div>
+{%endblock%}

@@ -1,0 +1,67 @@
+{% include "share/base.djt" %}
+{% load staticfiles %}
+
+{%block title%}
+NITWShare | UpdateProfile
+{%endblock%}
+
+{%block content%}
+<div class='container-fluid' id="full-screen">
+
+        <div class='row' style="height:90vh;">
+            <div class='col-sm-8 right'>
+
+                {% if error %}
+                <div class="alert alert-danger alert-dismissable">
+                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <strong>{{error}}</strong>
+                </div>
+                {% endif %}
+
+                <form method="POST" class="form-horizontal" action="" style="padding:10% 0% 0% 25%;">
+                {% csrf_token %}
+                <div class="field">
+                    <label>Course</label>
+                    <select name="course" class="ui dropdown" id="course" required>
+                      <option value="">Select Category</option>
+                      <option value="BTech">B.Tech</option>
+                      <option value="MTech">M.Tech</option>
+                      <option value="MCA">MCA</option>
+                      <option value="MBA">MBA</option>
+                      <option value="PHD">PHD</option>
+                    </select>
+                    </div>
+                 <br><br>
+                    <div class="field">
+                        <label>Branch</label>
+                        <select name="branch" class="ui dropdown" id="branch" required>
+                          <option value="">Select Category</option>
+                          <option value="CSE">CSE</option>
+                          <option value="ECE">ECE</option>
+                          <option value="MECH">MECH</option>
+                          <option value="MME">MME</option>
+                          <option value="CHE">CHE</option>
+                          <option value="CIVIL">CIVIL</option>
+                          <option value="EEE">EEE</option>
+                          <option value="BIO">BIOTECH</option>
+                        </select>
+                    </div>
+             <br><br>
+                    <div class="field">
+                        <label>Contact</label>
+                        <input type="text" name="contact" value="{{request.user.profile.contact}}" required>
+                    </div>
+                    <br><br>
+                    <div class="field">
+                        <label>Year of study</label>
+                        <input type="text" name="year" value="{{request.user.profile.year}}" required>
+                    </div>
+                    <br><br>
+                    <p style="margin-left: 7%;">
+                        <input type='submit' class="btn btn-success" style="color: #00A87A; background-color: #FFFFFF; font-family: 'Open Sans'; padding-left: 10%; padding-right: 10%; cursor:pointer;" value="Update">
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+{%endblock%}
