@@ -1,0 +1,105 @@
+{% extends "share/base.djt" %}
+{% load staticfiles %}
+
+{%block title%}
+<title>Manage Items</title>
+{%endblock%}
+
+{%block content%}
+<div class='container-fluid'>
+	<div class="row">
+		<div class="col-sm-4">
+			<button id="addbtn" class="btn btn-warning button row-update" data-toggle="modal" data-target="#addModal">
+                          Add Item
+            </button>
+		</div>
+		<div class="col-sm-4">
+		</div>
+		<div class="col-sm-4">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-offset-1 col-sm-9">
+		<table class="table table-hover table-condensed table-striped " id="datatable-editable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for item in availitems %}
+                  <tr>
+                  <td>{{item.pk}}</td>
+                  <td>{{item}}</td>
+                  <td>{{item.itemType}}</td>
+                  <td> 
+                        <button id="btn{{item.pk}}" class="btn btn-xs btn-warning button row-update" data-toggle="modal" data-target="#editModal" data-type="{{item.itemType}}" data-title="{{item}}" data-pk="{{item.pk}}">
+                          Edit
+                        </button>
+                  </td>
+                  </tr>
+              {% endfor %}
+            </tbody>
+            </table>
+            </div>
+	</div>
+
+</div>
+
+
+
+<div class="modal fade" id="addModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Edit Subject</h4>
+          </div>
+
+          <div class="modal-body">
+            <form method="POST" action="/manage/add" class="post-form form-horizontal" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="hidden" class="form-control" id="subpk" name="subpk" maxlength="20">
+              <div class="form-group">
+                  <label class="control-label col-sm-3" for="subname"> Type :</label>
+                  <div class="col-sm-6">
+                    <select name="itemType" class="dropdown" id="itemType" required>
+                      <option value="Books">Books</option>
+                      <option value="Equipment">Equipment</option>
+                      <option value="Notes">Notes</option>
+                      <option value="Others">Others</option>
+                    </select>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <label class="control-label col-sm-3" for="title"> Title :</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" id="title" name="title" maxlength="255" placeholder="title">
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <label class="control-label col-sm-3" for="desc"> Description :</label>
+                  <div class="col-sm-6">
+                    <textarea id="desc" rows="10" cols="50" name="desc" placeholder="Description"></textarea>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-3">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+              </div>
+            </form>
+          </div>
+
+        </div> 
+    </div>
+    </div>
+{%endblock%}

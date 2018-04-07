@@ -1,0 +1,78 @@
+{% extends "share/base.djt" %}
+{% load staticfiles %}
+
+{%block title%}
+<title>Search Items</title>
+{%endblock%}
+
+{%block css%}
+<link href = "{% static 'css/jquery.dataTables.min.css' %}" rel = "stylesheet">
+{%endblock%}
+
+{%block content%}
+<div class="container">
+	<table id="myTable" class="table table-hover table-condensed table-striped">
+	    <thead>
+	        <tr>
+	            <th>Sr no</th>
+	            <th>Title</th>
+	            <th>Owner</th>
+	            <th>Status</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	    {% for item in results %}
+	        <tr>
+	            <td>{{forloop.counter}}</td>
+	            <td>
+	            	<button id="btn{{item.pk}}" class="btn btn-xs btn-warning button row-update" data-toggle="modal" data-target="#requestModal" data-type="{{item.itemType}}" data-title="{{item}}" data-pk="{{item.pk}}" data-desc="{{item.desc}}">
+                          {{item}}
+                        </button>
+	            </td>
+	            <td>{{item.owner}}</td>
+	            <td>{{item.status}}</td>
+	        </tr>
+	    {% endfor %}
+	    </tbody>
+	</table>
+
+</div>
+
+<div class="modal fade" id="requestModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Request</h4>
+          </div>
+
+          <div class="modal-body">
+            <form method="POST" action="/manage/add" class="post-form form-horizontal" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="hidden" class="form-control" id="itempk" name="itempk" maxlength="20">
+              <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-3">
+                  <button type="submit" class="btn btn-primary">Request</button>
+                  </div>
+              </div>
+            </form>
+          </div>
+
+        </div> 
+    </div>
+ </div>
+
+
+
+
+
+{%endblock%}
+{%block script%}
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<script>
+	$(document).ready( function () {
+	    $('#myTable').DataTable();
+	} );
+</script>
+{%endblock%}
