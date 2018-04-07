@@ -22,7 +22,7 @@ NITWShare | Profile
                                    type="password" class="form-control"></td>
                     </tr>
                 </table>
-                {% if form.error %}
+                {% if error %}
                     <p class=" label label-danger">
                         Your username and password didn't match. 
                         Please try again.
