@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate,login, logout
 from django.contrib.auth.models import User
+from django.db.models import Q
 from .models import *
 # Create your views here.
 
@@ -94,5 +95,36 @@ def profile(request,regNum) :
     return render(request,'share/profilepage.djt',response)
 
 def manage(request):
-    return redirect('/')
+    response = {}
+    availitems = Item.objects.filter(owner=request.user, status = 1)
+    requesteditems = Item.objects.filter(owner=request.user, status = 2)
+    borroweditems = Item.objects.filter(owner=request.user, status = 3)
+    response['availitems'] = availitems
+    response['requesteditems'] = requesteditems
+    response['borroweditems'] = borroweditems
+    return render(request,'share/manageItems.djt',response)
 
+def addItem(request):
+    response = {}
+    if request.method == 'POST' :
+	    post_keys = ['itemType', 'title', 'desc']
+	    for i in post_keys:
+	            if(request.POST[i] == None or request.POST[i] == '') :
+	                return redirect('/manage')
+	    item = Item()
+	    item.owner = request.user
+	    item.itemType = request.POST['itemType'] 
+	    item.title = request.POST['title'] 
+	    item.desc = request.POST['desc']
+	    item.save()
+    return redirect('/manage')
+
+def search(request):
+    response = {}
+    if request.method == 'POST' :
+        query = request.POST['searchitem']
+        results = Item.objects.filter(Q(title__icontains=query)|Q(desc__icontains=query))
+        print results
+        response['results'] = results
+        return render(request,'share/search.djt',response)
+    return render(request,'share/search.djt',response)

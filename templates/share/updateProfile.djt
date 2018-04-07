@@ -1,4 +1,4 @@
-{% include "share/base.djt" %}
+{% extends "share/base.djt" %}
 {% load staticfiles %}
 
 {%block title%}
