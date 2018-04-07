@@ -75,3 +75,6 @@ def profile(request,regNum) :
 def signout(request):
     logout(request)
     return redirect('/')
+
+def manage(request):
+    return redirect('/')

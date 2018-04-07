@@ -1,1 +1,10 @@
-this is index
+{% include "share/base.djt" %}
+{% load staticfiles %}
+
+{%block title%}
+<title>NITWShare</title>
+{%endblock%}
+
+{%block content%}
+Welcome to NITW Share
+{%endblock%}

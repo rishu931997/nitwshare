@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {%block title%}
-NITWShare | Register
+<title> NITWShare | Register </title>
 {%endblock%}
 
 {%block content%}

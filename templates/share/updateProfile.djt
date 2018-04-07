@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {%block title%}
-NITWShare | UpdateProfile
+<title>NITWShare | UpdateProfile</title>
 {%endblock%}
 
 {%block content%}

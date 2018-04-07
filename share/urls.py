@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^updateProfile/', views.updateProfile, name = 'update'),
     url(r'^profile/(?P<regNum>[^/]+)/$',views.profile,name='profile'),
     url(r'^signout/', views.signout, name = 'logout'),
+    url(r'^manage/', views.manage, name = 'manage'),
 ]
