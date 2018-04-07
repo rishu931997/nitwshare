@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, Http404,JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate,login, logout
 from django.contrib.auth.models import User
 from .models import *
 # Create your views here.
@@ -49,3 +49,24 @@ def signup(request):
         # return redirect('/auth/login')
         
     return render(request, 'share/signup.djt', None)
+
+def signin(request):
+    if request.user.is_authenticated() and request.user.is_active == True :
+        return redirect('/')
+    if request.method == 'POST':
+        user_name = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username = user_name, password = password)
+        if user == None :
+            return render(request, 'share/login.djt', {'error' : 'User-Name/Password Invalid'})
+        elif user.is_active == False :
+            login(request, user)
+            return redirect('/auth/updateProfile')
+        else : 
+            login(request, user)
+            return redirect('/')
+    return render(request, 'share/login.djt')
+
+def signout(request):
+    logout(request)
+    return redirect('/login')
