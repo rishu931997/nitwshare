@@ -1,26 +1,12 @@
+{% include "share/base.djt" %}
 {% load staticfiles %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>NITWShare | Register</title>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <meta name="author" content="NITWShare WebDev Team">
-    <meta name="description" content="NITWShare NIT WARANGAL Website">
-    <meta name="keywords" content="NITWShare NITW, NITWShare NIT WARANGAL, NITWShare Nitw">
-    <script src="{% static 'js/jquery-2.2.4.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <link href = "{% static 'css/flatty.bootstrap.min.css' %}" rel = "stylesheet">
-    
 
-    <style type="text/css">
-        
-    </style>
-</head>
+{%block title%}
+NITWShare | Register
+{%endblock%}
 
-<body>
-    <div class='container-fluid' id="full-screen">
+{%block content%}
+<div class='container-fluid' id="full-screen">
 
         <div class='row' style="height:90vh;">
             <div class='col-sm-8 right'>
@@ -48,5 +34,4 @@
             </div>
         </div>
     </div>
-</body>
-</html>
+{%endblock%}
