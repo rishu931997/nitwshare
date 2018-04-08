@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^manage/add$', views.addItem, name = 'additem'),
     # url(r'^discover/$', views.discover, name = 'discover'),
     url(r'^search$', views.search, name = 'search'),
+    url(r'^request$', views.request, name = 'request'),
 ]

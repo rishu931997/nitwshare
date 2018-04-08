@@ -52,7 +52,11 @@
           </div>
 
           <div class="modal-body">
-            <form method="POST" action="/manage/add" class="post-form form-horizontal" enctype="multipart/form-data">
+          	<ul>
+          		<li id="itemtitle"></li>
+          		<li id="itemdesc"></li>
+         	</ul>
+            <form method="POST" action="/request" class="post-form form-horizontal" enctype="multipart/form-data">
               {% csrf_token %}
               <input type="hidden" class="form-control" id="itempk" name="itempk" maxlength="20">
               <div class="form-group">
@@ -77,6 +81,14 @@
 <script>
 	$(document).ready( function () {
 	    $('#myTable').DataTable();
+	    $(".row-update").click(function(event){
+        // alert(this.id);
+        document.getElementById("itempk").value =  $(this).attr("data-pk");
+        document.getElementById("itemdesc").innerHTML =  $(this).attr("data-desc");
+        document.getElementById("itemtitle").innerHTML =  $(this).attr("data-title");
+        // document.getElementById("subcode").value =  $(this).attr("data-desc");
+      });
+
 	} );
 </script>
 {%endblock%}

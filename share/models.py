@@ -60,12 +60,12 @@ class BorrowRequest(models.Model):
 		(4,'Completed'),
 	)
 
-	owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='I_owner')
+	item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='item')
 	borrower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Item_borrower')
 	status = models.IntegerField(choices=status_choices,default=1)
 	description = models.CharField(max_length=512, null = True)
 	requestDate = models.DateField(default=datetime.date.today)
-	approvalDate = models.DateField(auto_now=False, auto_now_add=False)
+	approvalDate = models.DateField(null = True)
 
 
 
