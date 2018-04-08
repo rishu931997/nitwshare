@@ -11,7 +11,7 @@ def index(request):
     response = {}
     if request.user.is_active == True and request.user.is_authenticated():
         return render(request,'share/index.djt',response)
-    return render(request, 'share/signup.djt', response)
+    return render(request, 'share/signup1.djt', response)
 
 def signup(request):
     if request.user.is_active == True and request.user.is_authenticated():
@@ -20,12 +20,12 @@ def signup(request):
         if Userprofile.objects.filter(regNum=request.POST['regNum']).count() > 0 :
             response = {}
             response['error'] = 'This Registration Number Has Already Been Registered'
-            return render(request, 'share/signup.djt', response)
+            return render(request, 'share/signup1.djt', response)
 
         post_keys = ['username', 'email', 'password1', 'password2', 'last_name', 'first_name']
         for i in post_keys:
             if(request.POST[i] == None or request.POST[i] == '') :
-                return render('share/signup.djt', {'error' : "Data Error, Please Try Again."})
+                return render('share/signup1.djt', {'error' : "Data Error, Please Try Again."})
         username  = request.POST['username'].lower()
         emailadr  = request.POST['email']
         password  = request.POST['password1']
@@ -48,7 +48,7 @@ def signup(request):
             user = authenticate(username = username, password = password)
             login(request, user)
             
-            return redirect('/updateProfile')
+            return redirect('share/updateProfile')
         # return redirect('/auth/login')
         
     return render(request, 'share/signup1.djt', None)
@@ -64,7 +64,7 @@ def signin(request):
             return render(request, 'share/login1.djt', {'error' : 'User-Name/Password Invalid'})
         elif user.is_active == False :
             login(request, user)
-            return redirect('/auth/updateProfile')
+            return redirect('share/updateProfile')
         else : 
             login(request, user)
             return redirect('/')
@@ -105,7 +105,7 @@ def manage(request):
     response['requesteditems'] = requesteditems
     response['borroweditems'] = borroweditems
     return render(request,'share/manageItems.djt',response)
-
+    
 def addItem(request):
     response = {}
     if request.method == 'POST' :
@@ -126,7 +126,7 @@ def search(request):
     if request.method == 'POST' :
         query = request.POST['searchitem']
         results = Item.objects.filter(Q(title__icontains=query)|Q(desc__icontains=query))
-        print results
+        print ('results')
         response['results'] = results
         return render(request,'share/search.djt',response)
     return render(request,'share/search.djt',response)

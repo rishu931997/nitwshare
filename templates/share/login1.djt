@@ -91,6 +91,15 @@
 							Login
 						</button>
 					</div>
+					<div style="padding-top:60px;">
+					</div>
+
+					<div class="container-login100-form-btn">
+						<a href="/signup" class="login100-form-btn">
+							Sign up
+							</a>
+					</div>
+
 					<div style="padding-top: 10px;">
 					{% if error %}
                     <p class=" label label-danger">

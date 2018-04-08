@@ -8,44 +8,40 @@
 {%block content%}
 <div class='container-fluid'>
 	<div class="row">
-		<div class="col-sm-4">
+		<div class="col-sm-offset-1 col-sm-9">
+		    <table class="table table-hover table-condensed table-striped " id="datatable-editable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in availitems %}
+                        <tr>
+                            <td>{{item.pk}}</td>
+                            <td>{{item}}</td>
+                            <td>{{item.itemType}}</td>
+                            <td> 
+                                <button id="btn{{item.pk}}" class="btn btn-xs btn-warning button row-update" data-toggle="modal" data-target="#editModal" data-type="{{item.itemType}}" data-title="{{item}}" data-pk="{{item.pk}}">
+                                Edit
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+	</div>
+
+    <div class="row" >
+		<div class="col-sm-9" align="center">
 			<button id="addbtn" class="btn btn-warning button row-update" data-toggle="modal" data-target="#addModal">
                           Add Item
             </button>
 		</div>
-		<div class="col-sm-4">
-		</div>
-		<div class="col-sm-4">
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-sm-offset-1 col-sm-9">
-		<table class="table table-hover table-condensed table-striped " id="datatable-editable">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Type</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-              {% for item in availitems %}
-                  <tr>
-                  <td>{{item.pk}}</td>
-                  <td>{{item}}</td>
-                  <td>{{item.itemType}}</td>
-                  <td> 
-                        <button id="btn{{item.pk}}" class="btn btn-xs btn-warning button row-update" data-toggle="modal" data-target="#editModal" data-type="{{item.itemType}}" data-title="{{item}}" data-pk="{{item.pk}}">
-                          Edit
-                        </button>
-                  </td>
-                  </tr>
-              {% endfor %}
-            </tbody>
-            </table>
-            </div>
 	</div>
 
 </div>
@@ -87,7 +83,7 @@
               <div class="form-group">
                   <label class="control-label col-sm-3" for="desc"> Description :</label>
                   <div class="col-sm-6">
-                    <textarea id="desc" rows="10" cols="50" name="desc" placeholder="Description"></textarea>
+                    <textarea id="desc" rows="10" cols="40" name="desc" placeholder="Description"></textarea>
                   </div>
               </div>
 

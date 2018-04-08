@@ -57,6 +57,13 @@
 					</span>
 				</div>
 
+                {% if error %}
+                    <div class="alert alert-danger alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{error}}</strong>
+                    </div>
+                {% endif %}
+
 				<form class="login100-form validate-form" method="post" action="">
 					{% csrf_token %}
 					<div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
@@ -100,6 +107,15 @@
 						<button class="login100-form-btn" type="submit">
 							Signup
 						</button>
+					</div>
+                    
+                    <div style="padding-top:60px;">
+					</div>
+
+                    <div class="container-login100-form-btn">
+						<a href="/login" class="login100-form-btn" >
+							Login
+						</a>
 					</div>
 					
 				</form>

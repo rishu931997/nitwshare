@@ -11,30 +11,34 @@
 
 {%block content%}
 <div class="container">
-	<table id="myTable" class="table table-hover table-condensed table-striped">
-	    <thead>
-	        <tr>
-	            <th>Sr no</th>
-	            <th>Title</th>
-	            <th>Owner</th>
-	            <th>Status</th>
-	        </tr>
-	    </thead>
-	    <tbody>
-	    {% for item in results %}
-	        <tr>
-	            <td>{{forloop.counter}}</td>
-	            <td>
-	            	<button id="btn{{item.pk}}" class="btn btn-xs btn-warning button row-update" data-toggle="modal" data-target="#requestModal" data-type="{{item.itemType}}" data-title="{{item}}" data-pk="{{item.pk}}" data-desc="{{item.desc}}">
-                          {{item}}
-                        </button>
-	            </td>
-	            <td>{{item.owner}}</td>
-	            <td>{{item.status}}</td>
-	        </tr>
-	    {% endfor %}
-	    </tbody>
-	</table>
+	<div class="row">
+		<div class="col-sm-offset-0 col-sm-11">
+			<table id="myTable" class="table table-hover table-condensed table-striped">
+				<thead>
+					<tr>
+						<th>Sr no</th>
+						<th>Title</th>
+						<th>Owner</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for item in results %}
+					<tr>
+						<td>{{forloop.counter}}</td>
+						<td>
+							<button id="btn{{item.pk}}" class="btn btn-xs btn-warning button row-update" data-toggle="modal" data-target="#requestModal" data-type="{{item.itemType}}" data-title="{{item}}" data-pk="{{item.pk}}" data-desc="{{item.desc}}">
+								{{item}}
+								</button>
+						</td>
+						<td>{{item.owner}}</td>
+						<td>{{item.status}}</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 
 </div>
 
