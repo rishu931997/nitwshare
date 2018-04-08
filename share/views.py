@@ -4,12 +4,16 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate,login, logout
 from django.contrib.auth.models import User
 from django.db.models import Q
+import datetime
 from .models import *
 # Create your views here.
 
 def index(request):
     response = {}
     if request.user.is_active == True and request.user.is_authenticated():
+        req = BorrowRequest.objects.filter(item__owner = request.user, status = 1)
+        if(req.count() > 0):
+            response['requests'] = req
         return render(request,'share/index.djt',response)
     return render(request, 'share/signup1.djt', response)
 
@@ -99,11 +103,14 @@ def profile(request,regNum) :
 def manage(request):
     response = {}
     availitems = Item.objects.filter(owner=request.user, status = 1)
-    requesteditems = Item.objects.filter(owner=request.user, status = 2)
-    borroweditems = Item.objects.filter(owner=request.user, status = 3)
+    # requesteditems = Item.objects.filter(owner=request.user, status = 2)
+    # borroweditems = Item.objects.filter(owner=request.user, status = 3)
+    lended = BorrowRequest.objects.filter(item__owner = request.user, status = 2)
+    borrowed = BorrowRequest.objects.filter(borrower = request.user, status = 2)
     response['availitems'] = availitems
-    response['requesteditems'] = requesteditems
-    response['borroweditems'] = borroweditems
+    # response['requesteditems'] = requesteditems
+    response['borroweditems'] = borrowed
+    response['lendeditems'] = lended
     return render(request,'share/manageItems.djt',response)
     
 def addItem(request):
@@ -125,8 +132,7 @@ def search(request):
     response = {}
     if request.method == 'POST' :
         query = request.POST['searchitem']
-        results = Item.objects.filter(~Q(owner = request.user), Q(title__icontains=query)|Q(desc__icontains=query))
-        print ('results')
+        results = Item.objects.filter(Q(status = 1), ~Q(owner = request.user), Q(title__icontains=query)|Q(desc__icontains=query))
         response['results'] = results
         return render(request,'share/search.djt',response)
     return render(request,'share/search.djt',response)
@@ -135,7 +141,6 @@ def request(request):
     response = {}
     if request.method == 'POST' :
         query = request.POST['itempk']
-        print ('query')
         try:
             item = Item.objects.get(pk= query)
         except:
@@ -148,3 +153,52 @@ def request(request):
         reqobj.save()
         return redirect('/')
     return render(request,'share/search.djt',response)
+
+def accRequest(request):
+    response = {}
+    if request.method == 'POST' :
+        query = request.POST['itempk']
+        print request.POST
+        try:
+            itemreq = BorrowRequest.objects.get(pk= query)
+        except:
+            return redirect('/')
+        print itemreq
+        itemreq.status = 2
+        itemreq.approvalDate = datetime.date.today()
+        itemreq.save()
+        itemreq.item.status = 3
+        itemreq.item.save()
+        return redirect('/')
+    return redirect('/')
+
+def rejRequest(request):
+    response = {}
+    if request.method == 'POST' :
+        query = request.POST['itempk']
+        try:
+            itemreq = BorrowRequest.objects.get(pk= query)
+        except:
+            return redirect('/')
+        itemreq.status = 3
+        itemreq.save()
+        itemreq.item.status = 1
+        itemreq.item.save()
+        return redirect('/')
+    return redirect('/')
+
+
+def returnItem(request):
+    response = {}
+    if request.method == 'POST' :
+        query = request.POST['itempk']
+        try:
+            itemreq = BorrowRequest.objects.get(pk= query)
+        except:
+            return redirect('/')
+        itemreq.status = 4
+        itemreq.save()
+        itemreq.item.status = 1
+        itemreq.item.save()
+        return redirect('/manage')
+    return redirect('/manage')

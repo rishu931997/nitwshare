@@ -13,4 +13,7 @@ urlpatterns = [
     # url(r'^discover/$', views.discover, name = 'discover'),
     url(r'^search$', views.search, name = 'search'),
     url(r'^request$', views.request, name = 'request'),
+    url(r'^acceptrequest$', views.accRequest, name = 'accrequest'),
+    url(r'^rejectrequest$', views.rejRequest, name = 'rejrequest'),
+    url(r'^returnitem$', views.returnItem, name = 'returnItem'),
 ]

@@ -6,5 +6,112 @@
 {%endblock%}
 
 {%block content%}
-Welcome to NITW Share
+<div class="container">
+
+	<div class="row">
+		<div class="col-sm-offset-1 col-sm-9">
+		    <table class="table table-hover table-condensed table-striped " id="datatable-editable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Borrower</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in requests %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{item.item}}</td>
+                            <td>{{item.borrower}}</td>
+                            <td>{{item.requestDate}}</td>
+                            <td> 
+                                <button id="btn1{{item.pk}}" class="btn btn-xs btn-warning button row-update" data-toggle="modal" data-target="#acceptModal" data-title="{{item.item}}" data-borrower="{{item.borrower}}" data-pk="{{item.pk}}" data-desc="{{item.item.desc}}">
+                                Accept
+                                </button>
+                                <button id="btn2{{item.pk}}" class="btn btn-xs btn-danger button row-update" data-toggle="modal" data-target="#rejectModal" data-title="{{item.item}}" data-borrower="{{item.borrower}}" data-pk="{{item.pk}}" data-desc="{{item.item.desc}}">
+                                Reject
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+	</div>
+</div>
+<div class="modal fade" id="acceptModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Accept Request</h4>
+        </div>
+        <div class="modal-body">
+          <ul>
+          	<li class="itemtitle"></li>
+          	<li class="description"></li>
+          	<li class="borrower"></li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <form method="POST" action="/acceptrequest" class="post-form form-horizontal" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="hidden" class="form-control" id="itempk0" name="itempk" maxlength="20">
+              <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-3">
+                  <button type="submit" class="btn btn-primary">Accept</button>
+                  </div>
+              </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="modal fade" id="rejectModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Reject Request</h4>
+        </div>
+        <div class="modal-body">
+          <ul>
+          	<li class="itemtitle"></li>
+          	<li class="description"></li>
+          	<li class="borrower"></li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          	<form method="POST" action="/rejectrequest" class="post-form form-horizontal" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="hidden" class="form-control" id="itempk1" name="itempk" maxlength="20">
+              <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-3">
+                  <button type="submit" class="btn btn-danger">Reject</button>
+                  </div>
+              </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{%endblock%}
+{%block script%}
+<script>
+	$(document).ready( function () {
+	    $(".row-update").click(function(event){
+        document.getElementById("itempk0").value =  $(this).attr("data-pk");
+        document.getElementById("itempk1").value =  $(this).attr("data-pk");
+        $(".itemtitle").html("Title : " + $(this).attr("data-title"));
+        $(".description").html("Description : " + $(this).attr("data-desc"));
+        $(".borrower").html("Borrower : " + $(this).attr("data-borrower"));
+
+        // document.getElementById("subcode").value =  $(this).attr("data-desc");
+      });
+
+	} );
+</script>
 {%endblock%}

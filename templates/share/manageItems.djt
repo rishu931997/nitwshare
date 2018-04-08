@@ -9,6 +9,7 @@
 <div class='container-fluid'>
 	<div class="row">
 		<div class="col-sm-offset-1 col-sm-9">
+        <h3>Your Items</h3>
 		    <table class="table table-hover table-condensed table-striped " id="datatable-editable">
                 <thead>
                     <tr>
@@ -37,12 +38,70 @@
 	</div>
 
     <div class="row" >
-		<div class="col-sm-9" align="center">
+		<div class="col-sm-10" align="center">
 			<button id="addbtn" class="btn btn-warning button row-update" data-toggle="modal" data-target="#addModal">
                           Add Item
             </button>
 		</div>
-	</div>
+    <div class="row">
+    <div class="col-sm-offset-1 col-sm-9">
+        <h3>Items lent</h3>
+        <table class="table table-hover table-condensed table-striped " id="datatable-editable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>User</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in lendeditems %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{item.item}}</td>
+                            <td>{{item.borrower}}</td>
+                            <td> 
+                                <button id="btn{{item.pk}}" class="btn btn-sm btn-warning button row-update" data-toggle="modal" data-target="#returnModal" data-title="{{item.item}}" data-borrower="{{item.borrower}}" data-pk="{{item.pk}}" data-desc="{{item.item.desc}}">
+                                Received
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-offset-1 col-sm-9">
+        <h3>Items borrowed</h3>
+        <table class="table table-hover table-condensed table-striped " id="datatable-editable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Borrowed from</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in borroweditems %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{item.item}}</td>
+                            <td>{{item.item.owner}}</td>
+                            <td> 
+                                <button id="btn{{item.pk}}" class="btn btn-xs btn-warning button row-update" data-toggle="modal" data-target="#editModal" data-type="{{item.itemType}}" data-title="{{item}}" data-pk="{{item.pk}}">
+                                Edit
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+  </div>
 
 </div>
 
@@ -98,4 +157,48 @@
         </div> 
     </div>
     </div>
+
+<div class="modal fade" id="returnModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Accepr return</h4>
+        </div>
+        <div class="modal-body">
+          <ul>
+            <li class="itemtitle"></li>
+            <li class="description"></li>
+            <li class="borrower"></li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <form method="POST" action="/returnitem" class="post-form form-horizontal" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="hidden" class="form-control" id="itempk" name="itempk" maxlength="20">
+              <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-3">
+                  <button type="submit" class="btn btn-primary">Returned</button>
+                  </div>
+              </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{%endblock%}
+{%block script%}
+<script>
+  $(document).ready( function () {
+      $(".row-update").click(function(event){
+        document.getElementById("itempk").value =  $(this).attr("data-pk");
+        $(".itemtitle").html("Title : " + $(this).attr("data-title"));
+        $(".description").html("Description : " + $(this).attr("data-desc"));
+        $(".borrower").html("Borrower : " + $(this).attr("data-borrower"));
+
+        // document.getElementById("subcode").value =  $(this).attr("data-desc");
+      });
+
+  } );
+</script>
 {%endblock%}
