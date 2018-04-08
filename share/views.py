@@ -123,8 +123,26 @@ def search(request):
     response = {}
     if request.method == 'POST' :
         query = request.POST['searchitem']
-        results = Item.objects.filter(Q(title__icontains=query)|Q(desc__icontains=query))
+        results = Item.objects.filter(~Q(owner = request.user), Q(title__icontains=query)|Q(desc__icontains=query))
         print results
         response['results'] = results
         return render(request,'share/search.djt',response)
+    return render(request,'share/search.djt',response)
+
+def request(request):
+    response = {}
+    if request.method == 'POST' :
+        query = request.POST['itempk']
+        print query
+        try:
+            item = Item.objects.get(pk= query)
+        except:
+            return redirect('/')
+        item.status = 2
+        item.save()
+        reqobj = BorrowRequest()
+        reqobj.item = item
+        reqobj.borrower = request.user
+        reqobj.save()
+        return redirect('/')
     return render(request,'share/search.djt',response)
